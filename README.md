@@ -85,6 +85,12 @@ Le système dispose des outils suivants :
 | CUDA | 12.2 |
 | SDK Vision | ZED SDK |
 
+### Informations de connexion par défaut
+
+Pour la configuration initiale du ZED Box :
+
+Nom d'utilisateur : user
+Mot de passe : admin
 
 -----------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------
