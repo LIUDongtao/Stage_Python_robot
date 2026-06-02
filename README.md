@@ -6,7 +6,7 @@ Projet de stage ESIGELEC visant à développer une plateforme d’apprentissage 
 
 - Ran Pan – Détection des situations d'urgence
 - Zhen Yang – Navigation autonome entre A et B
-- Liu Dong – Détection d'obstacles en temps réel
+- Liu Dongtao – Détection d'obstacles en temps réel
 
 ## Objectifs
 
@@ -14,12 +14,11 @@ Projet de stage ESIGELEC visant à développer une plateforme d’apprentissage 
 2. Construire une plateforme pédagogique pour les TP de l'ESIGELEC.
 3. Optimiser les modules et favoriser leur interopérabilité.
 
-## Structure du projet
 
-- `emergency_detection/`
-- `autonomous_navigation/`
-- `obstacle_detection/`
 
+
+-----------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 ## Configuration du matériel : ZED Box
 Démarrage du ZED Box
 
@@ -38,3 +37,56 @@ Brancher un clavier et une souris sur les ports USB du ZED Box.
 
 5. Démarrage
 Une fois toutes les connexions effectuées, démarrer le système et se connecter à Ubuntu.
+
+
+## Configuration matérielle
+
+### Plateforme embarquée
+
+Le projet est développé sur une plateforme embarquée **Stereolabs ZED Box** intégrant :
+
+- NVIDIA Jetson Orin NX
+- Architecture ARM64 (aarch64)
+- NVIDIA JetPack 6.0
+- Ubuntu 22.04.4 LTS
+- CUDA 12.2
+- ZED SDK préinstallé
+
+### Caméra utilisée
+
+- Stereolabs ZED 2i
+- Caméra stéréoscopique (vision binoculaire)
+- Acquisition RGB et profondeur (Depth)
+- Compatible avec le SDK ZED pour la détection d'obstacles en temps réel
+
+### Logiciels installés
+
+Le système dispose des outils suivants :
+
+- ZED Explorer
+- ZED Depth Viewer
+- ZED Calibration
+- ZED Diagnostic
+- ZED Sensor Viewer
+- ZEDfu
+- ZED Media Server
+
+### Informations système
+
+| Élément | Valeur |
+|----------|----------|
+| Plateforme | Stereolabs ZED Box |
+| Module GPU | NVIDIA Jetson Orin NX |
+| Architecture | ARM64 (aarch64) |
+| Système | Ubuntu 22.04.4 LTS |
+| JetPack | 6.0 |
+| L4T | R36.3 |
+| Python | 3.10.12 |
+| CUDA | 12.2 |
+| SDK Vision | ZED SDK |
+
+
+-----------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
+
+
