@@ -1,7 +1,9 @@
 cannot create user data directory failed to verify selinux context of /home/user/snap: cannot locate''matchpathcon''
 exeuctable snap-confine is packaged without necessary permissions and cannot continue required permitted capability cap_dac_override not found in current capabilities
-问题:snap 和 apparmor不兼容
+1.问题:snap 和 apparmor不兼容
 
 解决：
 sudo apt install --reinstall snapd
 sudo systemctl enable --now snapd.apparmor.service 启用 AppArmor 与 Snap 的集成
+
+2.问题:
