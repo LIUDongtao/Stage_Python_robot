@@ -3,6 +3,7 @@
 Projet de stage ESIGELEC visant à développer une plateforme d’apprentissage et d’expérimentation en intelligence artificielle, Python et robotique autonome.
 
 ## document lien https://www.stereolabs.com/docs/embedded/zed-box
+## demo lien https://github.com/stereolabs/zed-sdk/tree/master
 ## Membres
 
 - Ran Pan – Détection des situations d'urgence
