@@ -81,7 +81,7 @@ def main(opt):
 
     # Open the camera
     err = zed.open(init_params)
-    if err > sl.ERROR_CODE.SUCCESS:
+    if err != sl.ERROR_CODE.SUCCESS:
         exit(1)
 
     # Enable object detection module
@@ -89,7 +89,18 @@ def main(opt):
     # Defines if the object detection will track objects across images flow.
     obj_param.enable_tracking = True       # if True, enable positional tracking
     obj_param.detection_model = sl.OBJECT_DETECTION_MODEL.MULTI_CLASS_BOX_MEDIUM
-
+	
+    # xin tian jia de 
+    if obj_param.enable_tracking:
+    	positional_tracking_parameters = sl.PositionalTrackingParameters()
+    	err = zed.enable_positional_tracking(positional_tracking_parameters)
+    	
+    	if err != sl.ERROR_CODE.SUCCESS:
+        	print("Positional Tracking Error:", err)
+        	zed.close()
+        	exit(1)
+        	
+        	
     zed.enable_object_detection(obj_param)
 
     camera_info = zed.get_camera_information()
@@ -99,8 +110,8 @@ def main(opt):
 
     # Configure object detection runtime parameters
     obj_runtime_param = sl.ObjectDetectionRuntimeParameters()
-    obj_runtime_param.detection_confidence_threshold = 60
-    obj_runtime_param.object_class_filter = [sl.OBJECT_CLASS.PERSON]    # Only detect Persons
+    obj_runtime_param.detection_confidence_threshold = 30
+    #obj_runtime_param.object_class_filter = [sl.OBJECT_CLASS.PERSON]    # Only detect Persons
 
     # Create ZED objects filled in the main loop
     objects = sl.Objects()
@@ -111,11 +122,14 @@ def main(opt):
     
     while viewer.is_available():
         # Grab an image, a RuntimeParameters object must be given to grab()
-        if zed.grab(runtime_parameters) <= sl.ERROR_CODE.SUCCESS:
+        if zed.grab(runtime_parameters) == sl.ERROR_CODE.SUCCESS:
             # Retrieve left image
             zed.retrieve_image(image, sl.VIEW.LEFT)
             # Retrieve objects
             zed.retrieve_objects(objects, obj_runtime_param)
+            print("Detected:",len(objects.object_list))
+            for obj in objects.object_list:
+                print ("ID:",obj.id,"Distance:",round(obj.position[2],2),"m")
             # Update GL view
             viewer.update_view(image, objects)
 
