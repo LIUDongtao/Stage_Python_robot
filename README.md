@@ -192,4 +192,225 @@ Si vous cliquez sur **Cancel**, VS Code risque de ne pas enregistrer vos informa
 -----------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------
 
+## ZED 2i Camera Processing Pipeline
+
+This project uses the ZED 2i stereo camera for real-time image acquisition, object detection, distance measurement, and robot control.
+
+### 1. Hardware Connection
+
+Current testing setup:
+
+```text
+ZED 2i
+  ↓ USB 3.0
+ZED Box
+  ↓ Ethernet
+Network / Remote PC
+```
+
+Future robot setup:
+
+```text
+ZED 2i
+  ↓ USB 3.0
+Jetson on the vehicle
+  ↓ WiFi
+Network / Remote PC
+```
+
+The ZED 2i itself does not have an IP address. The IP address belongs to the ZED Box or the Jetson computer connected to the camera.
+
+---
+
+### 2. ZED SDK Data Flow
+
+The ZED SDK is responsible for opening the camera and retrieving image, depth, point cloud, IMU, and object detection data.
+
+For live camera input:
+
+```text
+ZED 2i
+  ↓
+ZED SDK
+  ↓
+sl.Mat
+  ↓ get_data()
+NumPy array
+```
+
+For SVO replay:
+
+```text
+SVO file
+  ↓
+ZED SDK
+  ↓
+sl.Mat
+  ↓ get_data()
+NumPy array
+```
+
+SVO is mainly used as a recorded ZED video format for testing and replay. In real-time robot operation, the camera is normally accessed directly through USB.
+
+---
+
+### 3. OpenCV Processing
+
+OpenCV is optional in this pipeline.
+
+The ZED SDK stores image data in `sl.Mat`. By calling:
+
+```python
+frame = image.get_data()
+```
+
+the `sl.Mat` image is converted into a NumPy array.
+
+OpenCV can then be used for optional image processing:
+
+```text
+NumPy array
+  ↓
+OpenCV
+  ↓
+resize / color conversion / drawing boxes / saving images
+```
+
+Example uses of OpenCV:
+
+```python
+frame_bgr = cv2.cvtColor(frame_rgba, cv2.COLOR_RGBA2BGR)
+cv2.imshow("ZED Image", frame_bgr)
+cv2.imwrite("capture.jpg", frame_bgr)
+```
+
+However, OpenCV is not required just to send the image to YOLO. YOLO can directly process the NumPy array.
+
+---
+
+### 4. YOLO Object Detection
+
+YOLO receives the image as a NumPy array:
+
+```text
+ZED SDK
+  ↓
+sl.Mat
+  ↓ get_data()
+NumPy array
+  ↓
+YOLO
+  ↓
+Detection results
+```
+
+YOLO is responsible for recognizing objects such as people, vehicles, traffic signs, or obstacles.
+
+Example:
+
+```python
+results = model(frame)
+```
+
+The ZED depth data can also be used together with YOLO bounding boxes to estimate the distance between the robot and detected objects.
+
+---
+
+### 5. ROS2 Robot Integration
+
+In the future robot system, ROS2 can be used to connect all modules together:
+
+```text
+ZED 2i
+  ↓
+ZED SDK
+  ↓
+ZED ROS2 Wrapper
+  ↓
+ROS2 Topics
+  ↓
+YOLO Node
+  ↓
+Decision Node
+  ↓
+Control Module
+  ↓
+Vehicle Motion
+```
+
+ROS2 allows the Jetson on the vehicle to publish camera images, depth maps, point clouds, odometry, and detection results over WiFi.
+
+A remote computer can view the camera and robot status using:
+
+```bash
+rviz2
+```
+
+or:
+
+```bash
+ros2 run rqt_image_view rqt_image_view
+```
+
+---
+
+### 6. Control Logic
+
+After YOLO detects an object, the detection result can be published to a ROS2 topic.
+
+Example logic:
+
+```text
+YOLO detects obstacle
+  ↓
+Get distance from ZED depth
+  ↓
+Decision node checks safety distance
+  ↓
+Control module sends velocity command
+  ↓
+Vehicle stops, slows down, or avoids obstacle
+```
+
+Example behavior:
+
+```text
+If person detected within 2 meters:
+    stop the vehicle
+
+If obstacle detected ahead:
+    slow down or avoid
+
+If path is clear:
+    continue moving
+```
+
+---
+
+### 7. Summary
+
+The full system can be understood as:
+
+```text
+ZED SDK:
+    Get image, depth, point cloud, and camera data
+
+OpenCV:
+    Optional image processing and visualization
+
+YOLO:
+    Object detection from NumPy image data
+
+ROS2:
+    Communication between camera, detection, navigation, and control modules
+
+Control Module:
+    Sends movement commands to the vehicle
+```
+
+Final target architecture:
+
+```text
+ZED 2i → Jetson → ZED SDK → ROS2 → YOLO → Decision Node → Vehicle Control
+```
 
