@@ -168,6 +168,21 @@ or from the Ubuntu application menu.
 The Jetson platform uses the ARM64 architecture (`aarch64`).
 
 Verify the architecture using:
+## VS Code – Création du trousseau de clés (Keyring)
+
+Lors de la première connexion à GitHub ou GitHub Copilot dans VS Code sous Linux, une fenêtre peut apparaître pour créer un **Keyring** (« Default Keyring »).
+
+### Solution
+
+Saisissez votre **mot de passe de session Linux**, puis cliquez sur **Continue**.
+
+### Pourquoi ?
+
+Le Keyring permet de stocker de manière sécurisée les identifiants et jetons d’authentification utilisés par VS Code, GitHub et GitHub Copilot.
+
+### Remarque
+
+Si vous cliquez sur **Cancel**, VS Code risque de ne pas enregistrer vos informations de connexion.
 
 
 
