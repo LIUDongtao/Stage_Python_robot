@@ -10,6 +10,7 @@ print object distances, and save a camera image every 5 seconds
 into the ./image folder.
 
 This version uses OpenCV instead of Pillow.
+Click the OpenCV window X or press q to exit normally.
 """
 
 import os
@@ -36,6 +37,7 @@ def parse_args(init, opt):
 
             ip = ip_str.split(':')[0]
             port = int(ip_str.split(':')[1])
+
             init.set_from_stream(ip, port)
             print("[Sample] Using Stream input, IP:", ip_str)
 
@@ -131,14 +133,16 @@ def main(opt):
     last_capture_time = 0.0
     capture_count = 0
 
+    window_name = "ZED Left Image - OpenCV"
+    cv2.namedWindow(window_name, cv2.WINDOW_NORMAL)
+
     while viewer.is_available():
         if zed.grab(runtime_parameters) == sl.ERROR_CODE.SUCCESS:
-
             zed.retrieve_image(image, sl.VIEW.LEFT)
 
             frame_rgba = image.get_data()
 
-            # ZED 图像是 RGBA，OpenCV 保存 JPG 推荐使用 BGR
+            # ZED LEFT image 是 RGBA，OpenCV 显示/保存通常使用 BGR
             frame_bgr = cv2.cvtColor(frame_rgba, cv2.COLOR_RGBA2BGR)
 
             current_time = time.time()
@@ -177,14 +181,20 @@ def main(opt):
                     "Distance:", round(distance, 2), "m"
                 )
 
-            # OpenGL窗口：显示ZED官方3D检测框
+            # OpenGL 窗口：显示 ZED 官方 3D 检测框
             viewer.update_view(image, objects)
 
-            # OpenCV窗口：显示普通左目画面
-            cv2.imshow("ZED Left Image - OpenCV", frame_bgr)
+            # OpenCV 窗口：显示普通左目画面
+            cv2.imshow(window_name, frame_bgr)
 
-            # 按 q 退出
-            if cv2.waitKey(1) & 0xFF == ord('q'):
+            key = cv2.waitKey(1) & 0xFF
+
+            # 按 q 正常退出
+            if key == ord('q'):
+                break
+
+            # 点击 OpenCV 窗口右上角 X 正常退出
+            if cv2.getWindowProperty(window_name, cv2.WND_PROP_VISIBLE) < 1:
                 break
 
     viewer.exit()
