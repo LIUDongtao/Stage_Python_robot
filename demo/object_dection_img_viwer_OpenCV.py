@@ -194,7 +194,11 @@ def main(opt):
                 break
 
             # 点击 OpenCV 窗口右上角 X 正常退出
-            if cv2.getWindowProperty(window_name, cv2.WND_PROP_VISIBLE) < 1:
+            try:
+                visible = cv2.getWindowProperty(window_name, cv2.WND_PROP_VISIBLE)
+                if visible < 1:
+                    break
+            except cv2.error:
                 break
 
     viewer.exit()
