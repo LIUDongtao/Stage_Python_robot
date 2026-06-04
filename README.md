@@ -94,6 +94,84 @@ Pour la configuration initiale du ZED Box :
 Nom d'utilisateur : user
 Mot de passe : admin
 
+## IDE Configuration (VS Code)
+
+### Why VS Code
+
+The project is mainly developed in Python and will later integrate:
+
+* ZED SDK
+* OpenCV
+* YOLO
+* ROS2
+
+Visual Studio Code is recommended because it provides:
+
+* Python development support
+* Integrated terminal
+* Git integration
+* Remote development capabilities
+* ROS2 extensions
+* YOLO/OpenCV development support
+
+---
+
+### Install VS Code on Jetson (ARM64)
+
+#### 1. Install required tools
+
+```bash
+sudo apt install wget gpg
+```
+
+#### 2. Import Microsoft's signing key
+
+```bash
+wget -qO- https://packages.microsoft.com/keys/microsoft.asc | sudo gpg --dearmor -o /usr/share/keyrings/microsoft.gpg
+```
+
+#### 3. Add the Microsoft repository
+
+```bash
+echo "Types: deb
+URIs: https://packages.microsoft.com/repos/code
+Suites: stable
+Components: main
+Architectures: amd64,arm64,armhf
+Signed-By: /usr/share/keyrings/microsoft.gpg" | sudo tee /etc/apt/sources.list.d/vscode.sources
+```
+
+#### 4. Update package list
+
+```bash
+sudo apt update
+```
+
+#### 5. Install VS Code
+
+```bash
+sudo apt install code
+```
+
+#### 6. Launch VS Code
+
+```bash
+code
+```
+
+or from the Ubuntu application menu.
+
+---
+
+### Notes
+
+The Jetson platform uses the ARM64 architecture (`aarch64`).
+
+Verify the architecture using:
+
+
+
+
 -----------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------
 
