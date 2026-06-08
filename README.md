@@ -6,6 +6,7 @@ Projet de stage ESIGELEC visant à développer une plateforme d’apprentissage 
 ## demo lien https://github.com/stereolabs/zed-sdk/tree/master
 ## SDK download: https://www.stereolabs.com/en-fr/developers/release
 ## YOLO document:https://docs.ultralytics.com/#where-to-start
+## YOLO-ZED:https://github.com/stereolabs/zed-yolo
 ## Membres
 
 - Ran Pan – Détection des situations d'urgence
