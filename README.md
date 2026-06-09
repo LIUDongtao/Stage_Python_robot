@@ -547,20 +547,26 @@ source ~/ros2_ws/install/local_setup.bash
 ros2 launch zed_wrapper zed_camera.launch.py camera_model:=zed2i
 The first launch may take a few minutes while initializing internal components.
 
+## Launch RTAB-Map with ZED Camera
 
-# 2eme Terminal ouvrir RTAB map
-'''
+First source the ROS 2 and workspace environments:
+
+```bash
 source /opt/ros/humble/setup.bash
 source ~/ros2_ws/install/local_setup.bash
+```
 
+Then launch RTAB-Map:
+
+```bash
 ros2 launch rtabmap_launch rtabmap.launch.py \
-rgb_topic:=/zed/zed_node/rgb/image_rect_color \
-depth_topic:=/zed/zed_node/depth/depth_registered \
-camera_info_topic:=/zed/zed_node/rgb/camera_info \
-odom_topic:=/zed/zed_node/odom \
-approx_sync:=true \
-rviz:=true
-''
+    rgb_topic:=/zed/zed_node/rgb/image_rect_color \
+    depth_topic:=/zed/zed_node/depth/depth_registered \
+    camera_info_topic:=/zed/zed_node/rgb/camera_info \
+    odom_topic:=/zed/zed_node/odom \
+    approx_sync:=true \
+    rviz:=true
+```
 --------------------------------------------------------------------------------------------------------------
 ## Check Available Topics
 
