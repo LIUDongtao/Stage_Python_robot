@@ -539,7 +539,7 @@ echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc
 ```
 
 ---
-
+----------------------------------------------------------------------------------------------------------------------------------------
 ## Launch ZED 2i ROS2 Wrapper
 source /opt/ros/humble/setup.bash
 source ~/ros2_ws/install/local_setup.bash
@@ -562,7 +562,7 @@ odom_topic:=/zed/zed_node/odom \
 approx_sync:=true \
 rviz:=true
 ---
-
+--------------------------------------------------------------------------------------------------------------
 ## Check Available Topics
 
 Open a new terminal:
