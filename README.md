@@ -577,7 +577,25 @@ List topics:
 ros2 topic list
 ```
 
+1. 确认图像和深度有频率
 
+新开终端：
+
+source /opt/ros/humble/setup.bash
+source ~/ros2_ws/install/local_setup.bash
+
+ros2 topic hz /zed/zed_node/rgb/image_rect_color
+
+再执行：
+
+ros2 topic hz /zed/zed_node/depth/depth_registered
+
+如果有 average rate，说明图像正常。
+
+2. 确认里程计在动
+ros2 topic echo /zed/zed_node/odom
+
+拿起 ZED 2i 轻轻移动，看 position 数值会不会变化。
 
 ## Applications
 
