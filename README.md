@@ -464,7 +464,10 @@ humble
 
 ```bash
 sudo apt update
-sudo apt install python3-rosdep python3-colcon-common-extensions -y
+sudo apt install python3-rosdep python3-colcon-common-extensions -ysource /opt/ros/humble/setup.bash
+source ~/ros2_ws/install/local_setup.bash
+
+ros2 launch zed_wrapper zed_camera.launch.py camera_model:=zed2i
 ```
 
 Initialize rosdep:
@@ -541,19 +544,24 @@ echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc
 ---
 
 ## Launch ZED 2i ROS2 Wrapper
+source /opt/ros/humble/setup.bash
+source ~/ros2_ws/install/local_setup.bash
 
-```bash
 ros2 launch zed_wrapper zed_camera.launch.py camera_model:=zed2i
-```
-
 The first launch may take a few minutes while initializing internal components.
 
-Expected messages:
 
-```text
-ZED connection -> SUCCESS
-```
+2eme Terminal ouvrir RTAB map
+source /opt/ros/humble/setup.bash
+source ~/ros2_ws/install/local_setup.bash
 
+ros2 launch rtabmap_launch rtabmap.launch.py \
+rgb_topic:=/zed/zed_node/rgb/image_rect_color \
+depth_topic:=/zed/zed_node/depth/depth_registered \
+camera_info_topic:=/zed/zed_node/rgb/camera_info \
+odom_topic:=/zed/zed_node/odom \
+approx_sync:=true \
+rviz:=true
 ---
 
 ## Check Available Topics
