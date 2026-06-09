@@ -525,9 +525,6 @@ Successful build:
 
 ```text
 Summary: 3 packages finished
-```
-
----
 
 ## Source the Workspace
 
@@ -552,6 +549,7 @@ The first launch may take a few minutes while initializing internal components.
 
 
 2eme Terminal ouvrir RTAB map
+
 source /opt/ros/humble/setup.bash
 source ~/ros2_ws/install/local_setup.bash
 
@@ -579,45 +577,7 @@ List topics:
 ros2 topic list
 ```
 
-Important topics:
 
-### RGB Image
-
-```text
-/zed/zed_node/rgb/image_rect_color
-```
-
-### Depth Image
-
-```text
-/zed/zed_node/depth/depth_registered
-```
-
-### Point Cloud
-
-```text
-/zed/zed_node/point_cloud/cloud_registered
-```
-
-### Odometry
-
-```text
-/zed/zed_node/odom
-```
-
-### Pose
-
-```text
-/zed/zed_node/pose
-```
-
-### TF
-
-```text
-/tf
-```
-
----
 
 ## Applications
 
@@ -632,17 +592,4 @@ The ROS2 integration provides:
 * SLAM support
 * Navigation support
 
-This setup will be used as the foundation for:
-
-```text
-YOLO Object Detection
-        +
-ZED Depth Estimation
-        +
-ROS2
-        +
-RTAB-Map
-        +
-Occupancy Grid Mapping
-```
 
