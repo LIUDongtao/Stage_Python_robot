@@ -549,7 +549,7 @@ The first launch may take a few minutes while initializing internal components.
 
 
 # 2eme Terminal ouvrir RTAB map
-
+'''
 source /opt/ros/humble/setup.bash
 source ~/ros2_ws/install/local_setup.bash
 
@@ -560,7 +560,7 @@ camera_info_topic:=/zed/zed_node/rgb/camera_info \
 odom_topic:=/zed/zed_node/odom \
 approx_sync:=true \
 rviz:=true
-
+''
 --------------------------------------------------------------------------------------------------------------
 ## Check Available Topics
 
