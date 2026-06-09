@@ -549,7 +549,6 @@ The first launch may take a few minutes while initializing internal components.
 
 
 2eme Terminal ouvrir RTAB map
-
 source /opt/ros/humble/setup.bash
 source ~/ros2_ws/install/local_setup.bash
 
