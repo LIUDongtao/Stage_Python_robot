@@ -538,7 +538,7 @@ To automatically load ROS2 at startup:
 echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc
 ```
 
----
+
 ----------------------------------------------------------------------------------------------------------------------------------------
 ## Launch ZED 2i ROS2 Wrapper
 source /opt/ros/humble/setup.bash
@@ -551,7 +551,6 @@ The first launch may take a few minutes while initializing internal components.
 # 2eme Terminal ouvrir RTAB map
 
 source /opt/ros/humble/setup.bash
-
 source ~/ros2_ws/install/local_setup.bash
 
 ros2 launch rtabmap_launch rtabmap.launch.py \
@@ -561,7 +560,7 @@ camera_info_topic:=/zed/zed_node/rgb/camera_info \
 odom_topic:=/zed/zed_node/odom \
 approx_sync:=true \
 rviz:=true
----
+
 --------------------------------------------------------------------------------------------------------------
 ## Check Available Topics
 
