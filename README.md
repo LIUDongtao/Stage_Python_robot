@@ -414,4 +414,227 @@ Final target architecture:
 ```text
 ZED 2i → Jetson → ZED SDK → ROS2 → YOLO → Decision Node → Vehicle Control
 ```
+# ROS2 Integration with ZED 2i
+
+## Environment
+
+* Platform: NVIDIA Jetson AGX Orin
+* Operating System: Ubuntu 22.04
+* ROS2 Distribution: Humble
+* Camera: ZED 2i
+* ZED SDK Version: 4.2.x
+
+---
+
+## Verify ROS2 Installation
+
+Check whether ROS2 is installed:
+
+```bash
+ls /opt/ros
+```
+
+Expected output:
+
+```text
+humble
+```
+
+Load ROS2 environment:
+
+```bash
+source /opt/ros/humble/setup.bash
+```
+
+Verify ROS2:
+
+```bash
+printenv ROS_DISTRO
+```
+
+Expected output:
+
+```text
+humble
+```
+
+---
+
+## Install Required Tools
+
+```bash
+sudo apt update
+sudo apt install python3-rosdep python3-colcon-common-extensions -y
+```
+
+Initialize rosdep:
+
+```bash
+sudo rosdep init
+rosdep update
+```
+
+---
+
+## Create ROS2 Workspace
+
+```bash
+mkdir -p ~/ros2_ws/src
+cd ~/ros2_ws/src
+```
+
+Clone the ZED ROS2 Wrapper:
+
+```bash
+git clone https://github.com/stereolabs/zed-ros2-wrapper.git
+```
+
+---
+
+## Select Compatible Wrapper Version
+
+The latest wrapper is not compatible with ZED SDK 4.2.x.
+
+Switch to the compatible version:
+
+```bash
+cd ~/ros2_ws/src/zed-ros2-wrapper
+git checkout humble-v4.2.5
+```
+
+---
+
+## Build the Workspace
+
+```bash
+cd ~/ros2_ws
+
+rm -rf build install log
+
+source /opt/ros/humble/setup.bash
+
+rosdep install --from-paths src --ignore-src -r -y
+
+colcon build --symlink-install --cmake-args=-DCMAKE_BUILD_TYPE=Release
+```
+
+Successful build:
+
+```text
+Summary: 3 packages finished
+```
+
+---
+
+## Source the Workspace
+
+```bash
+source ~/ros2_ws/install/local_setup.bash
+```
+
+To automatically load ROS2 at startup:
+
+```bash
+echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc
+```
+
+---
+
+## Launch ZED 2i ROS2 Wrapper
+
+```bash
+ros2 launch zed_wrapper zed_camera.launch.py camera_model:=zed2i
+```
+
+The first launch may take a few minutes while initializing internal components.
+
+Expected messages:
+
+```text
+ZED connection -> SUCCESS
+```
+
+---
+
+## Check Available Topics
+
+Open a new terminal:
+
+```bash
+source /opt/ros/humble/setup.bash
+source ~/ros2_ws/install/local_setup.bash
+```
+
+List topics:
+
+```bash
+ros2 topic list
+```
+
+Important topics:
+
+### RGB Image
+
+```text
+/zed/zed_node/rgb/image_rect_color
+```
+
+### Depth Image
+
+```text
+/zed/zed_node/depth/depth_registered
+```
+
+### Point Cloud
+
+```text
+/zed/zed_node/point_cloud/cloud_registered
+```
+
+### Odometry
+
+```text
+/zed/zed_node/odom
+```
+
+### Pose
+
+```text
+/zed/zed_node/pose
+```
+
+### TF
+
+```text
+/tf
+```
+
+---
+
+## Applications
+
+The ROS2 integration provides:
+
+* RGB image streaming
+* Depth perception
+* Point cloud generation
+* Visual odometry
+* Pose tracking
+* 3D object localization
+* SLAM support
+* Navigation support
+
+This setup will be used as the foundation for:
+
+```text
+YOLO Object Detection
+        +
+ZED Depth Estimation
+        +
+ROS2
+        +
+RTAB-Map
+        +
+Occupancy Grid Mapping
+```
 
