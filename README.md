@@ -560,12 +560,20 @@ Then launch RTAB-Map:
 
 ```bash
 ros2 launch rtabmap_launch rtabmap.launch.py \
-    rgb_topic:=/zed/zed_node/rgb/image_rect_color \
-    depth_topic:=/zed/zed_node/depth/depth_registered \
-    camera_info_topic:=/zed/zed_node/rgb/camera_info \
-    odom_topic:=/zed/zed_node/odom \
-    approx_sync:=true \
-    rviz:=true
+  frame_id:=zed_camera_link \
+  subscribe_odom:=true \
+  odom_topic:=/zed/zed_node/odom \
+  visual_odometry:=false \
+  rgb_topic:=/zed/zed_node/rgb/image_rect_color \
+  depth_topic:=/zed/zed_node/depth/depth_registered \
+  camera_info_topic:=/zed/zed_node/rgb/camera_info \
+  approx_sync:=true \
+  topic_queue_size:=30 \
+  sync_queue_size:=30 \
+  wait_for_transform:=1.0 \
+  grid:=true \
+  Grid/FromDepth:=true \
+  Grid/3D:=false
 ```
 --------------------------------------------------------------------------------------------------------------
 ## Check Available Topics
