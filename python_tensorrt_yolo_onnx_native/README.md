@@ -96,6 +96,17 @@ This operation is performed only once and may take several minutes.
 
 ---
 
+###  Run YOLO11n with Ros2 RTABMap + rviz2
+
+```bash
+cd ~/Desktop/python_tensorrt_yolo_onnx_native
+
+python3 custom_internal_detector_ros_coco.py \
+--custom_onnx yolo11n.onnx \
+--ros_frame zed_camera_link
+```
+
+
 ### 7. Expected result
 
 The program displays:
