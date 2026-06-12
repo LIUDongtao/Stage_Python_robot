@@ -625,3 +625,132 @@ The ROS2 integration provides:
 * Navigation support
 
 
+### Zed2i + RTABmap +rviz2 + yolo11n
+# Launch Instructions
+
+## Terminal 1 - Start ZED2i Camera
+
+```bash
+source /opt/ros/humble/setup.bash
+
+ros2 launch zed_wrapper zed_camera.launch.py camera_model:=zed2i
+```
+
+Verify ZED topics:
+
+```bash
+ros2 topic list | grep zed
+```
+
+---
+
+## Terminal 2 - Start RTAB-Map
+
+```bash
+source /opt/ros/humble/setup.bash
+
+ros2 launch rtabmap_launch rtabmap.launch.py \
+frame_id:=zed_left_camera_frame \
+subscribe_odom:=true \
+odom_topic:=/zed/zed_node/odom \
+visual_odometry:=false \
+rgb_topic:=/zed/zed_node/rgb/image_rect_color \
+depth_topic:=/zed/zed_node/depth/depth_registered \
+camera_info_topic:=/zed/zed_node/rgb/camera_info \
+approx_sync:=true \
+grid:=true \
+Grid/FromDepth:=true \
+Grid/3D:=false \
+delete_db_on_start:=true
+```
+
+Verify RTAB-Map topics:
+
+```bash
+ros2 topic list | grep rtabmap
+```
+
+---
+
+## Terminal 3 - Start YOLO11n Semantic Detection
+
+Enter the project directory:
+
+```bash
+cd ~/Desktop/python_tensorrt_yolo_onnx_native
+```
+
+Run YOLO11n:
+
+```bash
+python3 yolo_ros_subscriber.py \
+--model yolo11n.pt \
+--image_topic /zed/zed_node/rgb/image_rect_color \
+--depth_topic /zed/zed_node/depth/depth_registered \
+--camera_info_topic /zed/zed_node/rgb/camera_info \
+--frame_id map
+```
+
+Verify marker publishing:
+
+```bash
+ros2 topic hz /yolo/markers
+```
+
+---
+
+## Terminal 4 - Start RViz2
+
+```bash
+source /opt/ros/humble/setup.bash
+
+rviz2
+```
+
+### RViz Configuration
+
+Set **Fixed Frame**:
+
+```text
+map
+```
+
+Add the following displays:
+
+| Display Type | Topic |
+|-------------|--------|
+| Map | /rtabmap/grid_prob_map |
+| PointCloud2 | /rtabmap/cloud_map |
+| MarkerArray | /yolo/markers |
+
+---
+
+## System Overview
+
+```text
+ZED2i
+  │
+  ▼
+RGB + Depth
+  │
+  ▼
+RTAB-Map
+  │
+  ▼
+2D / 3D Map
+  │
+  ▼
+YOLO11n
+  │
+  ▼
+Semantic Object Detection
+  │
+  ▼
+TF Transform (Camera → Map)
+  │
+  ▼
+MarkerArray
+  │
+  ▼
+RViz Semantic Map
+```
