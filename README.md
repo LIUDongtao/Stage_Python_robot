@@ -776,7 +776,3 @@ ros2 launch rtabmap_launch rtabmap.launch.py \
 
 
 
-  ros2 launch zed_wrapper zed_camera.launch.py \
-  camera_model:=zed2i \
-  resolution:=HD720 \
-  grab_frame_rate:=15
