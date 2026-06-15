@@ -757,8 +757,16 @@ RViz Semantic Map
 
 
 ### 降低建图压力
+
+ros2 launch zed_wrapper zed_camera.launch.py \
+camera_model:=zed2i \
+resolution:=VGA
+
+
+
+
 ros2 launch rtabmap_launch rtabmap.launch.py \
-  frame_id:=zed_camera_link \
+  frame_id:=zed_left_camera_frame \
   subscribe_odom:=true \
   odom_topic:=/zed/zed_node/odom \
   visual_odometry:=false \
@@ -766,13 +774,11 @@ ros2 launch rtabmap_launch rtabmap.launch.py \
   depth_topic:=/zed/zed_node/depth/depth_registered \
   camera_info_topic:=/zed/zed_node/rgb/camera_info \
   approx_sync:=true \
-  topic_queue_size:=10 \
-  sync_queue_size:=10 \
-  wait_for_transform:=0.5 \
-  grid:=true \
-  Grid/FromDepth:=true \
-  Grid/3D:=false \
-  delete_db_on_start:=true
-
-
-
+  wait_imu_to_init:=false \
+  rtabmap_viz:=true \
+  rviz:=false \
+  database_path:=~/.ros/rtabmap.db \
+  delete_db_on_start:=true \
+  Rtabmap/DetectionRate:=2 \
+  RGBD/LinearUpdate:=0.05 \
+  RGBD/AngularUpdate:=0.05
