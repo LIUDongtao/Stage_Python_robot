@@ -757,14 +757,14 @@ RViz Semantic Map
 
 
 ### 降低建图压力
-
+```
 ros2 launch zed_wrapper zed_camera.launch.py \
 camera_model:=zed2i \
 resolution:=VGA
+```
 
 
-
-
+```
 ros2 launch rtabmap_launch rtabmap.launch.py \
   frame_id:=zed_left_camera_frame \
   subscribe_odom:=true \
@@ -782,3 +782,4 @@ ros2 launch rtabmap_launch rtabmap.launch.py \
   Rtabmap/DetectionRate:=2 \
   RGBD/LinearUpdate:=0.05 \
   RGBD/AngularUpdate:=0.05
+```
