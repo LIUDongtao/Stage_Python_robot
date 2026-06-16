@@ -29,13 +29,13 @@ cd ~/Desktop/python_tensorrt_yolo_onnx_native
 
 Run YOLO11n:
 
-python3 yolo_ros_subscriber.py \
---model yolo11n.pt \
---image_topic /zed/zed_node/rgb/image_rect_color \
---depth_topic /zed/zed_node/depth/depth_registered \
---camera_info_topic /zed/zed_node/rgb/camera_info \
---frame_id map
-
+python3 ~/Desktop/python_tensorrt_yolo_onnx_native/yolo_ros_subscriber_final.py \
+  --image_topic /zed/zed_node/rgb/image_rect_color \
+  --depth_topic /zed/zed_node/depth/depth_registered \
+  --camera_info_topic /zed/zed_node/rgb/camera_info \
+  --marker_topic /yolo/markers \
+  --frame_id map \
+  --camera_frame zed_left_camera_frame
 
 
 rviz2
