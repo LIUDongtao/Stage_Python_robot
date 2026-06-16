@@ -542,10 +542,9 @@ echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc
 ----------------------------------------------------------------------------------------------------------------------------------------
 ## Launch ZED 2i ROS2 Wrapper
 source /opt/ros/humble/setup.bash
-source ~/ros2_ws/install/local_setup.bash
+source ~/ros2_ws/install/setup.bash
 
 ros2 launch zed_wrapper zed_camera.launch.py camera_model:=zed2i
-The first launch may take a few minutes while initializing internal components.
 
 ## Launch RTAB-Map with ZED Camera
 
@@ -560,20 +559,20 @@ Then launch RTAB-Map:
 
 ```bash
 ros2 launch rtabmap_launch rtabmap.launch.py \
-  frame_id:=zed_camera_link \
-  subscribe_odom:=true \
-  odom_topic:=/zed/zed_node/odom \
-  visual_odometry:=false \
   rgb_topic:=/zed/zed_node/rgb/image_rect_color \
   depth_topic:=/zed/zed_node/depth/depth_registered \
   camera_info_topic:=/zed/zed_node/rgb/camera_info \
+  odom_topic:=/zed/zed_node/odom \
+  frame_id:=zed_camera_link \
   approx_sync:=true \
+  approx_sync_max_interval:=0.1 \
+  subscribe_odom_info:=false \
+  qos:=2 \
   topic_queue_size:=30 \
   sync_queue_size:=30 \
-  wait_for_transform:=1.0 \
-  grid:=true \
-  Grid/FromDepth:=true \
-  Grid/3D:=false
+  rtabmap_args:="--delete_db_on_start" \
+  rviz:=true \
+  rtabmap_viz:=true
 ```
 --------------------------------------------------------------------------------------------------------------
 ## Check Available Topics
