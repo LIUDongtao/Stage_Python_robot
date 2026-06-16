@@ -23,4 +23,18 @@ ros2 launch rtabmap_launch rtabmap.launch.py \
   rviz:=true \
   rtabmap_viz:=true
 
-rm -rf ~/.rviz2
+先全部关掉 ROS2 进程：
+pkill -f ros2
+pkill -f rtabmap
+pkill -f rviz2
+pkill -f zed
+
+然后清理 FastDDS SHM 文件：
+
+rm -rf /dev/shm/fastrtps_*
+rm -rf /dev/shm/fastdds_*
+
+再重新 source：
+
+source /opt/ros/humble/setup.bash
+source ~/ros2_ws/install/setup.bash
