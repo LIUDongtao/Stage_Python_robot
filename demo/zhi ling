@@ -23,6 +23,24 @@ ros2 launch rtabmap_launch rtabmap.launch.py \
   rviz:=true \
   rtabmap_viz:=true
 
+Enter the project directory:
+
+cd ~/Desktop/python_tensorrt_yolo_onnx_native
+
+Run YOLO11n:
+
+python3 yolo_ros_subscriber.py \
+--model yolo11n.pt \
+--image_topic /zed/zed_node/rgb/image_rect_color \
+--depth_topic /zed/zed_node/depth/depth_registered \
+--camera_info_topic /zed/zed_node/rgb/camera_info \
+--frame_id map
+
+
+
+rviz2
+
+
 先全部关掉 ROS2 进程：
 pkill -f ros2
 pkill -f rtabmap
