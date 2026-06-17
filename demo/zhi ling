@@ -20,7 +20,7 @@ ros2 launch rtabmap_launch rtabmap.launch.py \
   topic_queue_size:=30 \
   sync_queue_size:=30 \
   rtabmap_args:="--delete_db_on_start" \
-  rviz:=true \
+  rviz:=false \
   rtabmap_viz:=true
 
 Enter the project directory:
