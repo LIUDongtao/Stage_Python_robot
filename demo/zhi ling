@@ -6,14 +6,6 @@ ros2 launch zed_wrapper zed_camera.launch.py \
   camera_model:=zed2i \
   publish_tf:=true \
   publish_map_tf:=false
-Terminal 2：补 optical TF
-source /opt/ros/humble/setup.bash
-
-ros2 run tf2_ros static_transform_publisher \
-  0 0 0 -1.5708 0 -1.5708 \
-  zed_left_camera_frame \
-  zed_left_camera_optical_frame
-
 不要关这个终端。
 
 Terminal 3：RTAB-Map，只用 ZED odom，关闭 rgbd_odometry
@@ -51,14 +43,12 @@ python3 ~/Downloads/yolo_semantic_dbscan_ros2.py \
   --marker_topic /semantic/markers \
   --frame_id map \
   --camera_frame zed_left_camera_frame
-
-
 python3 ~/Downloads/depth_obstacle_mapper_v1_final.py \
   --depth_topic /zed/zed_node/depth/depth_registered \
   --camera_info_topic /zed/zed_node/rgb/camera_info \
   --marker_topic /depth_obstacles/markers \
   --frame_id map \
-  --camera_frame zed_left_camera_frame
+  --camera_frame zed_left_camera_optical_frame
 
 rviz2
 
