@@ -52,6 +52,14 @@ python3 ~/Downloads/yolo_semantic_dbscan_ros2.py \
   --frame_id map \
   --camera_frame zed_left_camera_frame
 
+
+python3 ~/Downloads/depth_obstacle_mapper_v1_final.py \
+  --depth_topic /zed/zed_node/depth/depth_registered \
+  --camera_info_topic /zed/zed_node/rgb/camera_info \
+  --marker_topic /depth_obstacles/markers \
+  --frame_id map \
+  --camera_frame zed_left_camera_frame
+
 rviz2
 
 
