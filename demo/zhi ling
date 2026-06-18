@@ -43,13 +43,12 @@ python3 ~/Downloads/yolo_semantic_dbscan_forced_optical.py \
   --marker_topic /semantic/markers \
   --frame_id map \
   --camera_frame zed_left_camera_optical_frame
-python3 ~/Downloads/depth_obstacle_mapper_v1_final.py \
+python3 ~/Downloads/depth_obstacle_mapper_v2_forced_optical.py \
   --depth_topic /zed/zed_node/depth/depth_registered \
   --camera_info_topic /zed/zed_node/rgb/camera_info \
   --marker_topic /depth_obstacles/markers \
   --frame_id map \
   --camera_frame zed_left_camera_optical_frame
-
 rviz2
 
 
