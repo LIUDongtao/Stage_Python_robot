@@ -32,7 +32,7 @@ Terminal 4：YOLO + DBSCAN 语义标注
 source /opt/ros/humble/setup.bash
 source ~/ros2_ws/install/setup.bash
 
-python3 ~/Downloads/yolo_semantic_dbscan_ros2.py \
+python3 ~/Downloads/yolo_semantic_dbscan_forced_frame.py \
   --model yolo11s.pt \
   --conf 0.25 \
   --dbscan_eps 0.6 \
