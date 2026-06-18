@@ -1,9 +1,22 @@
+Terminal 1：ZED2i
 source /opt/ros/humble/setup.bash
 source ~/ros2_ws/install/setup.bash
 
-ros2 launch zed_wrapper zed_camera.launch.py camera_model:=zed2i
+ros2 launch zed_wrapper zed_camera.launch.py \
+  camera_model:=zed2i \
+  publish_tf:=true \
+  publish_map_tf:=false
+Terminal 2：补 optical TF
+source /opt/ros/humble/setup.bash
 
+ros2 run tf2_ros static_transform_publisher \
+  0 0 0 -1.5708 0 -1.5708 \
+  zed_left_camera_frame \
+  zed_left_camera_optical_frame
 
+不要关这个终端。
+
+Terminal 3：RTAB-Map，只用 ZED odom，关闭 rgbd_odometry
 source /opt/ros/humble/setup.bash
 source ~/ros2_ws/install/setup.bash
 
@@ -12,44 +25,32 @@ ros2 launch rtabmap_launch rtabmap.launch.py \
   depth_topic:=/zed/zed_node/depth/depth_registered \
   camera_info_topic:=/zed/zed_node/rgb/camera_info \
   odom_topic:=/zed/zed_node/odom \
+  visual_odometry:=false \
+  subscribe_odom_info:=false \
   frame_id:=zed_camera_link \
+  odom_frame_id:=odom \
   approx_sync:=true \
   approx_sync_max_interval:=0.1 \
-  subscribe_odom_info:=false \
   qos:=2 \
-  topic_queue_size:=30 \
-  sync_queue_size:=30 \
+  Grid/3D:=false \
   rtabmap_args:="--delete_db_on_start" \
-  rviz:=false \
+  rviz:=true \
   rtabmap_viz:=true
-
-Enter the project directory:
-
-cd ~/Desktop/python_tensorrt_yolo_onnx_native
-
-Run YOLO11n:
-
-python3 ~/Desktop/python_tensorrt_yolo_onnx_native/yolo_ros_subscriber_final.py \
-  --image_topic /zed/zed_node/rgb/image_rect_color \
-  --depth_topic /zed/zed_node/depth/depth_registered \
-  --camera_info_topic /zed/zed_node/rgb/camera_info \
-  --marker_topic /yolo/markers \
-  --frame_id map \
-  --camera_frame zed_left_camera_frame
-
+Terminal 4：YOLO + DBSCAN 语义标注
+source /opt/ros/humble/setup.bash
+source ~/ros2_ws/install/setup.bash
 
 python3 ~/Downloads/yolo_semantic_dbscan_ros2.py \
   --model yolo11s.pt \
-  --conf 0.3 \
-  --dbscan_eps 0.5 \
-  --dbscan_min_samples 5 \
+  --conf 0.25 \
+  --dbscan_eps 0.6 \
+  --dbscan_min_samples 2 \
   --image_topic /zed/zed_node/rgb/image_rect_color \
   --depth_topic /zed/zed_node/depth/depth_registered \
   --camera_info_topic /zed/zed_node/rgb/camera_info \
   --marker_topic /semantic/markers \
   --frame_id map \
   --camera_frame zed_left_camera_frame
-
 
 rviz2
 
