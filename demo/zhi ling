@@ -38,6 +38,19 @@ python3 ~/Desktop/python_tensorrt_yolo_onnx_native/yolo_ros_subscriber_final.py 
   --camera_frame zed_left_camera_frame
 
 
+python3 ~/Downloads/yolo_semantic_dbscan_ros2.py \
+  --model yolo11s.pt \
+  --conf 0.3 \
+  --dbscan_eps 0.5 \
+  --dbscan_min_samples 5 \
+  --image_topic /zed/zed_node/rgb/image_rect_color \
+  --depth_topic /zed/zed_node/depth/depth_registered \
+  --camera_info_topic /zed/zed_node/rgb/camera_info \
+  --marker_topic /semantic/markers \
+  --frame_id map \
+  --camera_frame zed_left_camera_frame
+
+
 rviz2
 
 
