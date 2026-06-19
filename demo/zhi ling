@@ -5,7 +5,7 @@ source ~/ros2_ws/install/setup.bash
 ros2 launch zed_wrapper zed_camera.launch.py \
   camera_model:=zed2i \
   publish_tf:=true \
-  publish_map_tf:=false
+  publish_map_tf:=true
 不要关这个终端。
 
 Terminal 3：RTAB-Map，只用 ZED odom，关闭 rgbd_odometry
