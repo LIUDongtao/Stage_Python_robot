@@ -45,6 +45,15 @@ python3 ~/Downloads/yolo_semantic_dbscan_ttl_fixed.py \
   --frame_id map \
   --camera_frame zed_left_camera_optical_frame
 
+
+python3 ~/Downloads/yolo_obstacle_detector.py \
+  --model yolo11s.pt \
+  --conf 0.25 \
+  --classes person,chair,bottle,backpack,suitcase \
+  --print_detections
+
+
+
 ros2 run tf2_ros tf2_echo map zed_left_camera_optical_frame
 
 
