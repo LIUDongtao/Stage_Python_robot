@@ -192,68 +192,57 @@ Si vous cliquez sur **Cancel**, VS Code risque de ne pas enregistrer vos informa
 
 -----------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------
+## GPU Acceleration on Jetson Orin NX
 
-## ZED 2i Camera Processing Pipeline
+This project runs YOLO Pose on a NVIDIA Jetson Orin NX.
+To use GPU acceleration, PyTorch must be installed with the correct JetPack / CUDA version.
 
-This project uses the ZED 2i stereo camera for real-time image acquisition, object detection, distance measurement, and robot control.
+Current tested environment:
 
-### 1. Hardware Connection
-
-Current testing setup:
-
-```text
-ZED 2i
-  ↓ USB 3.0
-ZED Box
-  ↓ Ethernet
-Network / Remote PC
+```bash
+Jetson Orin NX
+JetPack 6.0
+L4T R36.3.0
+CUDA 12.2
+Python 3.10
+Ultralytics 8.4.61
 ```
 
-Future robot setup:
+Check CUDA availability:
 
-```text
-ZED 2i
-  ↓ USB 3.0
-Jetson on the vehicle
-  ↓ WiFi
-Network / Remote PC
+```bash
+python3 -c "import torch; print(torch.__version__); print(torch.cuda.is_available())"
 ```
 
-The ZED 2i itself does not have an IP address. The IP address belongs to the ZED Box or the Jetson computer connected to the camera.
+Expected output:
 
----
-
-### 2. ZED SDK Data Flow
-
-The ZED SDK is responsible for opening the camera and retrieving image, depth, point cloud, IMU, and object detection data.
-
-For live camera input:
-
-```text
-ZED 2i
-  ↓
-ZED SDK
-  ↓
-sl.Mat
-  ↓ get_data()
-NumPy array
+```bash
+True
 ```
 
-For SVO replay:
+If `torch.cuda.is_available()` returns `False`, YOLO will run on CPU and the FPS will be much lower.
 
-```text
-SVO file
-  ↓
-ZED SDK
-  ↓
-sl.Mat
-  ↓ get_data()
-NumPy array
+For JetPack 6.0 / CUDA 12.2, install the NVIDIA Jetson-compatible PyTorch and torchvision wheels from the official NVIDIA PyTorch for Jetson page:
+
+```bash
+pip3 install torch-2.3.0-cp310-cp310-linux_aarch64.whl
+pip3 install torchvision-0.18.0a0+6043bc2-cp310-cp310-linux_aarch64.whl --no-deps
 ```
 
-SVO is mainly used as a recorded ZED video format for testing and replay. In real-time robot operation, the camera is normally accessed directly through USB.
+After installation, test Ultralytics:
 
----
+```bash
+python3 -c "from ultralytics import YOLO; print('Ultralytics OK')"
+```
+
+In the program, YOLO automatically uses GPU when CUDA is available:
+
+```python
+device = "cuda:0" if torch.cuda.is_available() else "cpu"
+```
+
+With GPU acceleration, the current YOLO Pose version runs at around **12 FPS** on the Jetson Orin NX.
+
 
 ### 3. OpenCV Processing
 
