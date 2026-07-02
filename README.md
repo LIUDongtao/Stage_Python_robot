@@ -7,11 +7,7 @@ Projet de stage ESIGELEC visant à développer une plateforme d’apprentissage 
 ## SDK download: https://www.stereolabs.com/en-fr/developers/release
 ## YOLO document:https://docs.ultralytics.com/#where-to-start
 ## YOLO-ZED:https://github.com/stereolabs/zed-yolo
-## Membres
 
-- Ran Pan – Détection des situations d'urgence
-- Zhen Yang – Navigation autonome entre A et B
-- Liu Dongtao – Détection d'obstacles en temps réel
 
 ## Objectifs
 
