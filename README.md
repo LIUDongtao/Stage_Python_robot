@@ -130,13 +130,14 @@ To use GPU acceleration, PyTorch must be installed with the correct JetPack / CU
 Current tested environment:
 
 ```bash
-Jetson Orin NX
-JetPack 6.0
-L4T R36.3.0
-CUDA 12.2
-Python 3.10
-Ultralytics 8.4.61
-```
+Component	Description
+Hardware	NVIDIA Jetson Orin NX
+Operating System	Linux for Tegra (L4T R36.3.0)
+SDK	NVIDIA JetPack 6.0
+GPU Computing Platform	CUDA 12.2
+Deep Learning Framework	PyTorch
+Detection Framework	Ultralytics YOLO11 Pose
+Sensor	ZED2i Stereo Camera
 
 Check CUDA availability:
 
