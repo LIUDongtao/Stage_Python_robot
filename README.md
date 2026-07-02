@@ -122,7 +122,23 @@ Visual Studio Code is recommended because it provides:
 
 -----------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------
-## GPU Acceleration on Jetson Orin NX
+## GPU  on Jetson Orin NX for analyser pose_human
+
+ZED2i
+   │
+RGB Image
+   │
+YOLO11n-pose.pt
+   │
+PyTorch（由 torch.whl 安装）
+   │
+CUDA 12.2（JetPack 已提供）
+   │
+Jetson Orin NX GPU
+   │
+17 Keypoints
+   │
+你的姿态分类算法
 
 This project runs YOLO Pose on a NVIDIA Jetson Orin NX.
 To use GPU acceleration, PyTorch must be installed with the correct JetPack / CUDA version.
