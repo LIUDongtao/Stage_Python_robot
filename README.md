@@ -93,48 +93,26 @@ Pour la configuration initiale du ZED Box :
 Nom d'utilisateur : user
 Mot de passe : admin
 
-## IDE Configuration (VS Code)
-
-### Why VS Code
-
-The project is mainly developed in Python and will later integrate:
-
-* ZED SDK
-* OpenCV
-* YOLO
-* ROS2
-
-Visual Studio Code is recommended because it provides:
-
-* Python development support
-* Integrated terminal
-* Git integration
-* Remote development capabilities
-* ROS2 extensions
-* YOLO/OpenCV development support
-
----
 
 
 -----------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------
 ## GPU  on Jetson Orin NX for analyser pose_human
-
+```bash
 ZED2i
    │
 RGB Image
    │
 YOLO11n-pose.pt
    │
-PyTorch（由 torch.whl 安装）
+PyTorch
    │
-CUDA 12.2（JetPack 已提供）
+CUDA 12.2
    │
 Jetson Orin NX GPU
    │
 17 Keypoints
-   │
-你的姿态分类算法
+```
 
 This project runs YOLO Pose on a NVIDIA Jetson Orin NX.
 To use GPU acceleration, PyTorch must be installed with the correct JetPack / CUDA version.
@@ -150,6 +128,7 @@ GPU Computing Platform	CUDA 12.2
 Deep Learning Framework	PyTorch
 Detection Framework	Ultralytics YOLO11 Pose
 Sensor	ZED2i Stereo Camera
+```
 
 Check CUDA availability:
 
@@ -216,8 +195,6 @@ frame_bgr = cv2.cvtColor(frame_rgba, cv2.COLOR_RGBA2BGR)
 cv2.imshow("ZED Image", frame_bgr)
 cv2.imwrite("capture.jpg", frame_bgr)
 ```
-
-However, OpenCV is not required just to send the image to YOLO. YOLO can directly process the NumPy array.
 
 ---
 
@@ -521,26 +498,24 @@ List topics:
 ```bash
 ros2 topic list
 ```
-
-1. 确认图像和深度有频率
-
-新开终端：
+1. Vérifiez que les images et les données de profondeur sont émises à la même fréquence.
 
 source /opt/ros/humble/setup.bash
 source ~/ros2_ws/install/local_setup.bash
 
 ros2 topic hz /zed/zed_node/rgb/image_rect_color
 
-再执行：
+en suite：
 
 ros2 topic hz /zed/zed_node/depth/depth_registered
 
-如果有 average rate，说明图像正常。
+S'il y a une fréquence moyenne (« average rate »), cela signifie que les images sont publiées correctement.
 
-2. 确认里程计在动
+
+2. Vérifiez que l'odométrie est mise à jou
 ros2 topic echo /zed/zed_node/odom
 
-拿起 ZED 2i 轻轻移动，看 position 数值会不会变化。
+
 
 ## Applications
 
@@ -687,7 +662,7 @@ RViz Semantic Map
 ```
 
 
-### 降低建图压力
+### Réduire la charge de calcul liée à la cartographie.
 ```
 ros2 launch zed_wrapper zed_camera.launch.py \
 camera_model:=zed2i \
