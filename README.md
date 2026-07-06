@@ -366,9 +366,12 @@ rviz2
 
 
 # Only yolo for object or pose of human
-yolo_zed_obstacle.py
-zed_yolo_pose_v2_fast.py
 
+```bash
+python3 yolo_zed_obstacle.py
+python3 zed_yolo_pose_v2_fast.py
+```
+The detected data will be printed in the terminal.
 
 
 ---
