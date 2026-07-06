@@ -366,7 +366,7 @@ rviz2
 
 
 ## yolo+RTABmap 
-<img src="images/yolortabmap.png" width="800">
+<img src="yolortabmap.png" width="800">
 # Only yolo for object or pose of human
 
 ```bash
@@ -375,8 +375,8 @@ python3 zed_yolo_pose_v2_fast.py
 ```
 The detected data will be printed in the terminal.
 
-<img src="images/yolopose.png" width="800">
-<img src="images/obj-detecte.png" width="800">
+<img src="yolopose.png" width="800">
+<img src="obj-detecte.png" width="800">
 
 
 ---
