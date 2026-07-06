@@ -19,7 +19,6 @@ Projet de stage ESIGELEC visant à développer une plateforme d’apprentissage 
 
 - Project Overview
 - Project Objectives
-- Repository Structure
 - Hardware Platform
 - Software Environment
 - System Architecture
@@ -60,25 +59,14 @@ The project is intended for education, experimentation, and future autonomous na
 - Learn Python for robotics
 - Learn Artificial Intelligence algorithms
 - Build a reusable robotics platform
+- Detecte object or pose of human or emotion of human
 - Integrate computer vision with ROS2
 - Develop semantic mapping capabilities
 - Prepare for autonomous navigation
 
 ---
 
-# Repository Structure
 
-```text
-Stage_Python_robot
-│
-├── README.md
-├── launch/
-├── scripts/
-├── models/
-├── docs/
-├── images/
-└── ros2_ws/
-```
 
 ---
 
