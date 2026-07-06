@@ -306,7 +306,7 @@ Depth Query
 
 ---
 
-# Launch Instructions
+# Launch Instructions RTAB-map + yolo11n  
 
 ## Terminal 1
 
@@ -375,6 +375,13 @@ python3 ~/Downloads/yolo_semantic_dbscan_ttl_fixed.py \
 ```bash
 rviz2
 ```
+
+
+# Only yolo for object or pose of human
+yolo_zed_obstacle.py
+zed_yolo_pose_v2_fast.py
+
+
 
 ---
 
