@@ -367,7 +367,7 @@ rviz2
 
 ## yolo+RTABmap 
 <img src="yolortabmap.png" width="800">
-# Only yolo for object or pose of human
+### Only yolo for object or pose of human
 
 ```bash
 python3 yolo_zed_obstacle.py
