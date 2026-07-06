@@ -314,7 +314,10 @@ Depth Query
 source /opt/ros/humble/setup.bash
 source ~/ros2_ws/install/setup.bash
 
-ros2 launch zed_wrapper zed_camera.launch.py camera_model:=zed2i
+ros2 launch zed_wrapper zed_camera.launch.py \
+  camera_model:=zed2i \
+  publish_tf:=true \
+  publish_map_tf:=true
 ```
 
 ---
@@ -322,13 +325,24 @@ ros2 launch zed_wrapper zed_camera.launch.py camera_model:=zed2i
 ## Terminal 2
 
 ```bash
-source /opt/ros/humble/setup.bash
-
 ros2 launch rtabmap_launch rtabmap.launch.py \
-frame_id:=zed_left_camera_frame \
-subscribe_odom:=true \
-visual_odometry:=false \
-odom_topic:=/zed/zed_node/odom
+  rgb_topic:=/zed/zed_node/rgb/image_rect_color \
+  depth_topic:=/zed/zed_node/depth/depth_registered \
+  camera_info_topic:=/zed/zed_node/rgb/camera_info \
+  odom_topic:=/zed/zed_node/odom \
+  visual_odometry:=false \
+  subscribe_odom_info:=false \
+  frame_id:=zed_camera_link \
+  odom_frame_id:=odom \
+  approx_sync:=true \
+  approx_sync_max_interval:=0.2 \
+  topic_queue_size:=30 \
+  sync_queue_size:=30 \
+  qos:=2 \
+  Grid/3D:=false \
+  rtabmap_args:="--delete_db_on_start" \
+  rviz:=false \
+  rtabmap_viz:=true
 ```
 
 ---
@@ -336,10 +350,22 @@ odom_topic:=/zed/zed_node/odom
 ## Terminal 3
 
 ```bash
-cd ~/Desktop/python_tensorrt_yolo_onnx_native
+source /opt/ros/humble/setup.bash
+source ~/ros2_ws/install/setup.bash
 
-python3 yolo_ros_subscriber.py \
---model yolo11n.pt
+python3 ~/Downloads/yolo_semantic_dbscan_ttl_fixed.py \
+  --model yolo11s.pt \
+  --conf 0.25 \
+  --dbscan_eps 0.6 \
+  --dbscan_min_samples 2 \
+  --point_ttl 5.0 \
+  --publish_rate 2.0 \
+  --image_topic /zed/zed_node/rgb/image_rect_color \
+  --depth_topic /zed/zed_node/depth/depth_registered \
+  --camera_info_topic /zed/zed_node/rgb/camera_info \
+  --marker_topic /semantic/markers \
+  --frame_id map \
+  --camera_frame zed_left_camera_optical_frame
 ```
 
 ---
