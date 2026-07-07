@@ -54,15 +54,13 @@ This folder is responsible for facial expression recognition.
 **Files**
 
 - `emotion_model.py`
-- `emotion_predict.py`
 - `labels.py`
 
 **Function**
 
 - Load the pre-trained FER-PyTorch (ResNet18) model
 - Preprocess the detected face image
-- Predict facial expressions
-- Convert prediction results into emotion labels
+
 
 Supported emotions:
 
@@ -96,10 +94,9 @@ This folder contains helper functions used throughout the project.
 
 Example utilities include:
 
-- Image preprocessing
 - Drawing face bounding boxes
 - Displaying emotion labels
-- Confidence visualization
+
 
 Keeping these functions separate makes the project easier to maintain.
 
