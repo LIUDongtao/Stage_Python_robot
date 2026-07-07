@@ -492,3 +492,60 @@ Planned
 - RTAB-Map
 - ROS2 Humble Documentation
 - Ultralytics YOLO
+
+# Real-Time Facial Expression Recognition
+
+## Project Overview
+
+This project implements a real-time facial expression recognition system
+using a **ZED2i camera**, **OpenCV**, and a **pre-trained ResNet18 model
+(FER-PyTorch)**.
+
+## Workflow
+
+``` text
+ZED2i Camera
+      ↓
+Capture RGB Frame
+      ↓
+OpenCV Detects Face
+      ↓
+Crop Face ROI
+      ↓
+Resize & Preprocess
+      ↓
+FER-PyTorch (Pre-trained ResNet18)
+      ↓
+Predict Emotion
+      ↓
+Display Result
+```
+
+## Main Steps
+
+1.  **Capture Image**\
+    Acquire real-time RGB frames from the ZED2i camera.
+
+2.  **Face Detection**\
+    Detect the face using OpenCV and obtain the face location.
+
+3.  **Face Extraction (ROI)**\
+    Crop the detected face region and remove the background.
+
+4.  **Emotion Recognition**\
+    Feed the cropped face into the pre-trained ResNet18 model to
+    classify one of the seven facial expressions.
+
+5.  **Visualization**\
+    Display the detected face together with the predicted emotion and
+    confidence score in real time.
+
+## Technologies
+
+-   Camera: ZED2i
+-   SDK: ZED SDK
+-   Image Processing: OpenCV
+-   Deep Learning: PyTorch
+-   Emotion Model: FER-PyTorch (ResNet18)
+-   Language: Python
+
