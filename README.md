@@ -7,6 +7,8 @@ Projet de stage ESIGELEC visant à développer une plateforme d’apprentissage 
 ## SDK download: https://www.stereolabs.com/en-fr/developers/release
 ## YOLO document:https://docs.ultralytics.com/#where-to-start
 ## YOLO-ZED:https://github.com/stereolabs/zed-yolo
+## EMOTION model/dataset: https://www.kaggle.com/code/gauravdiwan/fer-model-pytorch
+
 
 # Stage_Python_robot
 
