@@ -119,7 +119,43 @@ admin
 | Ultralytics | YOLO11 |
 
 ---
+To enable GPU acceleration, install the NVIDIA PyTorch wheels that match **JetPack 6.0 (L4T R36.2 / R36.3) + CUDA 12.2**.
 
+Official NVIDIA installation page:
+
+https://forums.developer.nvidia.com/t/pytorch-for-jetson/72048
+
+Download the following packages:
+
+- **torch 2.3**
+  - `torch-2.3.0-cp310-cp310-linux_aarch64.whl`
+- **torchvision 0.18**
+  - `torchvision-0.18.0a0+6043bc2-cp310-cp310-linux_aarch64.whl`
+- *(Optional)* **torchaudio 2.3**
+  - `torchaudio-2.3.0+952ea74-cp310-cp310-linux_aarch64.whl`
+
+Install them:
+
+```bash
+pip3 install torch-2.3.0-cp310-cp310-linux_aarch64.whl
+pip3 install torchvision-0.18.0a0+6043bc2-cp310-cp310-linux_aarch64.whl --no-deps
+pip3 install torchaudio-2.3.0+952ea74-cp310-cp310-linux_aarch64.whl --no-deps
+```
+
+Verify the installation:
+
+```bash
+python3 -c "import torch; print(torch.__version__); print(torch.cuda.is_available())"
+```
+
+Expected output:
+
+```text
+2.3.0
+True
+```
+
+If `torch.cuda.is_available()` returns `False`, the model will run on the CPU instead of the NVIDIA GPU, resulting in significantly lower inference performance.
 # System Architecture
 
 ```text
