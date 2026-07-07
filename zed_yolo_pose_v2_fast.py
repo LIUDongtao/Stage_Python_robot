@@ -30,9 +30,8 @@ except Exception:
     CUDA_AVAILABLE = False
 
 
-# =========================
 # Speed parameters
-# =========================
+
 MODEL_PATH = "yolo11n-pose.pt"     # fastest pose model
 YOLO_IMGSZ = 416                  # 416 faster than 640, try 320 if still slow
 YOLO_CONF = 0.35
@@ -46,9 +45,8 @@ DEVICE = "cuda:0" if CUDA_AVAILABLE else "cpu"
 HALF = True if CUDA_AVAILABLE else False
 
 
-# =========================
 # COCO 17 keypoint indices
-# =========================
+
 NOSE = 0
 LEFT_EYE = 1
 RIGHT_EYE = 2
@@ -273,7 +271,6 @@ def main():
     print("ZED + YOLO11 Pose Analyzer V2 Fast")
     print(f"Model: {MODEL_PATH}, device: {DEVICE}, half: {HALF}")
     print(f"YOLO imgsz={YOLO_IMGSZ}, process every {PROCESS_EVERY_N_FRAMES} frame(s)")
-    print("Press Ctrl+C or q to stop")
     print("====================================\n")
 
     zed = sl.Camera()
