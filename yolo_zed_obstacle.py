@@ -36,8 +36,7 @@ print()
 
 model = YOLO("yolo11n.pt")
 
-print("Running...")
-print("Press Ctrl+C to stop")
+print("Running")
 print()
 
 try:
