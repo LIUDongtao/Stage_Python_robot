@@ -245,11 +245,10 @@ RViz
 
 ---
 
-# RTAB-Map SLAM
+# RTAB-Map
 
 RTAB-Map is responsible for
 
-- Visual SLAM
 - Loop Closure
 - Occupancy Grid
 - Point Cloud Mapping
