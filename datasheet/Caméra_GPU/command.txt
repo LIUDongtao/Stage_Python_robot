@@ -1,3 +1,0 @@
-验证Zed 2i摄像头
-/usr/local/zed/tools/ZED_Explorer 运行摄像头
-/usr/local/zed/tools/ZED_Depth_Viewer 左边彩色头像，右边深度图
