@@ -1,19 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-
-"""
-ZED2i + YOLO11 Pose - Human Posture Analyzer V2 Fast
-
-Compared with V1:
-- Lower ZED resolution/FPS to reduce camera + inference load
-- YOLO inference uses smaller imgsz
-- Process YOLO every N frames instead of every frame
-- Terminal output is throttled
-- max_det limits number of people for speed
-
-This version does NOT use ROS2 yet.
-"""
-
 import math
 import time
 from typing import Dict, Optional, Tuple, List
