@@ -1,13 +1,8 @@
-#!/usr/bin/env python3
-
 import pyzed.sl as sl
 from ultralytics import YOLO
 import numpy as np
 
-# ==========================
-# ZED 初始化
-# ==========================
-
+# ZED 
 zed = sl.Camera()
 
 init_params = sl.InitParameters()
@@ -36,9 +31,8 @@ print(f"fx={fx:.2f}")
 print(f"fy={fy:.2f}")
 print()
 
-# ==========================
 # YOLO
-# ==========================
+
 
 model = YOLO("yolo11n.pt")
 
@@ -47,9 +41,7 @@ print("Press Ctrl+C to stop")
 print()
 
 try:
-
     while True:
-
         if zed.grab(runtime) != sl.ERROR_CODE.SUCCESS:
             continue
 
@@ -58,28 +50,18 @@ try:
 
         frame = image.get_data()[:, :, :3]
         depth_map = depth.get_data()
-
         results = model(frame, verbose=False)
-
         lines = []
 
         for r in results:
-
             for box in r.boxes:
-
                 cls_id = int(box.cls[0])
                 class_name = model.names[cls_id]
-
                 x1, y1, x2, y2 = map(int, box.xyxy[0])
-
                 h = y2 - y1
-
-                # 仅取 bbox 下半部分
                 roi_y1 = int(y1 + h * 0.6)
                 roi_y2 = y2
-
                 roi = depth_map[roi_y1:roi_y2, x1:x2]
-
                 if roi.size == 0:
                     continue
 
@@ -95,17 +77,11 @@ try:
                     continue
 
                 depths = roi[ys, xs]
-
                 nearest_idx = np.argsort(depths)[:3]
-
                 for idx in nearest_idx:
-
                     u = x1 + xs[idx]
-
                     D = float(depths[idx])
-
                     X = (u - cx0) * D / fx
-
                     lines.append(
                         f"{class_name} | X={X:.2f}m | D={D:.2f}m"
                     )
