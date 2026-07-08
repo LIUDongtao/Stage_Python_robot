@@ -22,7 +22,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
 
-
+from emotion.FERModel import FERModel, classes
 EMOTION_LABELS = [
     "Angry",
     "Disgust",
@@ -78,51 +78,49 @@ class FER(nn.Module):
         return x
 
 
+
 class EmotionRecognizer:
     def __init__(self, model_path, device=None):
         if device is None:
-            device = "cuda:0" if torch.cuda.is_available() else "cpu"
+            device = "cuda" if torch.cuda.is_available() else "cpu"
 
-        self.device = device
-        self.model = FER().to(self.device)
+        self.device = torch.device(device)
+
+        self.model = FERModel(1, 7).to(self.device)
 
         checkpoint = torch.load(model_path, map_location=self.device)
 
         if isinstance(checkpoint, dict) and "model_state_dict" in checkpoint:
-            self.model.load_state_dict(checkpoint["model_state_dict"])
-        else:
-            self.model.load_state_dict(checkpoint)
+            checkpoint = checkpoint["model_state_dict"]
 
+        self.model.load_state_dict(checkpoint)
         self.model.eval()
 
     def preprocess(self, face_roi):
-        if face_roi is None or face_roi.size == 0:
-            return None
-
         gray = cv2.cvtColor(face_roi, cv2.COLOR_BGR2GRAY)
         gray = cv2.resize(gray, (48, 48))
 
         gray = gray.astype(np.float32) / 255.0
-        gray = (gray - 0.5) / 0.5
 
-        tensor = torch.from_numpy(gray).unsqueeze(0).unsqueeze(0)
+        tensor = torch.from_numpy(gray)
+        tensor = tensor.unsqueeze(0).unsqueeze(0)
         tensor = tensor.to(self.device)
 
         return tensor
 
     @torch.no_grad()
     def predict(self, face_roi):
-        tensor = self.preprocess(face_roi)
-
-        if tensor is None:
+        if face_roi is None or face_roi.size == 0:
             return "Unknown", 0.0
 
+        tensor = self.preprocess(face_roi)
+
         outputs = self.model(tensor)
-        probs = torch.softmax(outputs, dim=1)
+        probs = F.softmax(outputs, dim=1)
 
         conf, pred = torch.max(probs, dim=1)
 
-        emotion = EMOTION_LABELS[pred.item()]
-        confidence = conf.item()
+        label = classes[pred.item()]
+        score = conf.item()
 
-        return emotion, confidence
+        return label, score
