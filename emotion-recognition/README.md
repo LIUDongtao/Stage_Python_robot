@@ -96,17 +96,6 @@ The model is loaded during runtime for real-time emotion prediction.
 <img src="bad.png" width="800">
 ---
 
-## main.py
-
-This is the entry point of the project.
-
-It integrates all modules together:
-
-1. Capture images from the ZED2i camera.
-2. Detect faces using OpenCV.
-3. Crop the detected face (ROI).
-4. Predict facial expressions using the pre-trained model.
-5. Display the prediction results in real time.
 
 ---
 
