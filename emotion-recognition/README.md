@@ -93,7 +93,7 @@ The model is loaded during runtime for real-time emotion prediction.
 <img src="example_happy.png" width="800">
 
 # bad:
-<img src="bad_ex.png" width="800">
+<img src="bad.png" width="800">
 ---
 
 ## main.py
