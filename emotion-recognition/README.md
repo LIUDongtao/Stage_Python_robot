@@ -1,4 +1,4 @@
-# Project Structure
+# Project Emotion Structure
 
 This project is organized into multiple modules to improve readability, maintainability, and future scalability.
 
