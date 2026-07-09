@@ -140,7 +140,7 @@ python3 yolortab3obstacle.py
 ```
 or 
 ```bash
-python3 yolo_semantic_dbscan_ttl_fixed.py
+python3 yolo_semantic_dbscan_ttl_latest_tf_fixed.py
 ```
 
 This script subscribes to the YOLO detection results and **projects the detected obstacles directly onto the RTAB-Map**, allowing the detected objects to be visualized in the generated map.
