@@ -389,7 +389,7 @@ ros2 launch zed_wrapper zed_camera.launch.py \
 
 ---
 
-## Terminal 2
+## Terminal 2  
 
 ```bash
 ros2 launch rtabmap_launch rtabmap.launch.py \
@@ -414,7 +414,7 @@ ros2 launch rtabmap_launch rtabmap.launch.py \
 
 ---
 
-## Terminal 3
+## Terminal 3  yolo_semantic_dbscan_ttl_fixed.py  or yolortab3obstacle.py
 
 ```bash
 source /opt/ros/humble/setup.bash
