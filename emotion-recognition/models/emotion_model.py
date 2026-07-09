@@ -1,20 +1,11 @@
 
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-
 """
-emotion/emotion_model.py
-
-FER2013 PyTorch Emotion Recognition Model
-
 Input:
     - face ROI from OpenCV image
-
 Output:
     - emotion label
     - confidence
 """
-
 import cv2
 import torch
 import torch.nn as nn
@@ -35,7 +26,6 @@ EMOTION_LABELS = [
 
 class FER(nn.Module):
     """
-    Simple CNN for FER2013.
     Input: 1x48x48 grayscale face image.
     Output: 7 emotion classes.
     """
@@ -112,15 +102,12 @@ class EmotionRecognizer:
     @torch.no_grad()
     def predict(self, face_roi):
         tensor = self.preprocess(face_roi)
-
         if tensor is None:
             return "Unknown", 0.0
-
+            
         outputs = self.model(tensor)
         probs = torch.softmax(outputs, dim=1)
-
         conf, pred = torch.max(probs, dim=1)
-
         emotion = EMOTION_LABELS[pred.item()]
         confidence = conf.item()
 
