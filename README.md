@@ -418,13 +418,13 @@ ros2 launch rtabmap_launch rtabmap.launch.py \
 
 ---
 
-## Terminal 3  yolo_semantic_dbscan_ttl_fixed.py  or yolortab3obstacle.py
+## Terminal 3  yolo_semantic_dbscan_ttl_latest_tf_fixed.py  or yolortab3obstacle.py
 
 ```bash
 source /opt/ros/humble/setup.bash
 source ~/ros2_ws/install/setup.bash
 
-python3 ~/Downloads/yolo_semantic_dbscan_ttl_fixed.py \
+python3 ~/Downloads/yolo_semantic_dbscan_ttl_latest_tf_fixed.py \
   --model yolo11s.pt \
   --conf 0.25 \
   --dbscan_eps 0.6 \
@@ -438,6 +438,11 @@ python3 ~/Downloads/yolo_semantic_dbscan_ttl_fixed.py \
   --frame_id map \
   --camera_frame zed_left_camera_optical_frame
 ```
+or
+
+```bash
+python3 yolortab3obstacle.py
+```
 
 ---
 
@@ -450,7 +455,8 @@ rviz2
 
 ## yolo+RTABmap 
 <img src="yolortabmap.png" width="800">
-
+<img src="yoloversion3obstacle.png" width="800">
+<img src="yoloversionallobstacle.png" width="800">
 ```bash
 python3 yolo_zed_obstacle.py
 python3 zed_yolo_pose_v2_fast.py
