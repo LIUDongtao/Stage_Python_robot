@@ -88,18 +88,12 @@ The model is loaded during runtime for real-time emotion prediction.
 
 ---
 
-## utils/
+## example
+# good:
+<img src="example_happy.png" width="800">
 
-This folder contains helper functions used throughout the project.
-
-Example utilities include:
-
-- Drawing face bounding boxes
-- Displaying emotion labels
-
-
-Keeping these functions separate makes the project easier to maintain.
-
+# bad:
+<img src="bad_exemple.png" width="800">
 ---
 
 ## main.py
