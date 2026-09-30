@@ -81,3 +81,8 @@ rm -rf /dev/shm/fastdds_*
 
 source /opt/ros/humble/setup.bash
 source ~/ros2_ws/install/setup.bash
+
+
+--------------------------------------------------------
+cd ~/wifibot_ws
+nano start_wifibot.py
