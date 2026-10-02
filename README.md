@@ -174,7 +174,7 @@ bash:commande not found
 Vous pouvez essayer d'utiliser les codes suivantes pour quand on ouvrir chaque premier terminal:
 ```bash
 export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-```bash
+```
 
 
 
