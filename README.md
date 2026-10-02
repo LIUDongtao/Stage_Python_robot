@@ -167,7 +167,23 @@ Please refer to the documentation inside the `emotion-recognition` directory for
 | Ultralytics | YOLO11 |
 
 ---
+** C'est un rare problème mais si le premier fois de utiliser le StereoLabs mais il y a aucune commande fonction par exemple**
+```bash
+bash:commande not found
+```
+Vous pouvez essayer d'utiliser les codes suivantes pour quand on ouvrir chaque premier terminal:
+```bash
+export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+```bash
+
+
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 To enable GPU acceleration, install the NVIDIA PyTorch wheels that match **JetPack 6.0 (L4T R36.2 / R36.3) + CUDA 12.2**.
+
+**Il faut tout d'abord  téléchargé les zips sur le lien de NVIDIA suivante et dans le ~/home/user/ et fonction les code suivantes directement pour obtenir le torch**
 
 Official NVIDIA installation page:
 
@@ -231,33 +247,167 @@ If `torch.cuda.is_available()` returns `False`, the model will run on the CPU in
 ---
 
 # Installation
+## Troubleshooting
 
-## Install ROS2
+### 1. ROS 2 Humble is not available
+
+Check whether ROS 2 Humble is installed:
+
+```bash
+ls /opt/ros/
+```
+
+Then load the ROS 2 environment:
+
+```bash
+source /opt/ros/humble/setup.bash
+```
+
+Check the ROS distribution:
+
+```bash
+echo $ROS_DISTRO
+```
+
+Expected output:
+
+```text
+humble
+```
+
+If `/opt/ros/humble` does not exist, ROS 2 Humble is not correctly installed on the machine.
+
+---
+
+### 2. `www.ros.org` 404 error during `apt update`
+
+Example error:
+
+```text
+The repository 'https://www.ros.org jammy Release' does not have a Release file.
+404 Not Found
+```
+
+This means that an incorrect ROS APT repository has been configured.
+
+Find the incorrect repository:
+
+```bash
+grep -Rni "www.ros.org" /etc/apt/ 2>/dev/null
+```
+
+Remove or disable the incorrect `www.ros.org` repository.
+
+The ROS 2 repository should use:
+
+```text
+packages.ros.org/ros2/ubuntu
+```
+
+After correcting the repository:
 
 ```bash
 sudo apt update
-sudo apt install ros-humble-desktop
 ```
 
-## Create Workspace
+Make sure that the `www.ros.org` 404 error no longer appears.
+
+---
+
+### 3. `Unable to locate package ros-humble-...`
+
+Example:
+
+```text
+E: Unable to locate package ros-humble-xacro
+```
+
+This usually means that the ROS 2 APT repository is missing or incorrectly configured.
+
+First check:
 
 ```bash
-mkdir -p ~/ros2_ws/src
-cd ~/ros2_ws/src
+sudo apt update
 ```
 
-## Clone ZED Wrapper
+The output should contain the ROS 2 repository:
+
+```text
+packages.ros.org/ros2/ubuntu
+```
+
+Then check whether the package can be found:
 
 ```bash
-git clone https://github.com/stereolabs/zed-ros2-wrapper.git
+apt-cache policy ros-humble-xacro
 ```
+
+Once the ROS 2 repository is correctly configured, install the required package normally:
 
 ```bash
-cd zed-ros2-wrapper
-git checkout humble-v4.2.5
+sudo apt install ros-humble-xacro
 ```
 
-## Build
+---
+
+### 4. `xacro: command not found`
+
+Example error:
+
+```text
+/bin/bash: xacro: command not found
+```
+
+Install the ROS 2 Humble xacro package:
+
+```bash
+sudo apt update
+sudo apt install ros-humble-xacro
+```
+
+Then reload ROS 2:
+
+```bash
+source /opt/ros/humble/setup.bash
+```
+
+Verify:
+
+```bash
+which xacro
+```
+
+Expected result:
+
+```text
+/opt/ros/humble/bin/xacro
+```
+
+---
+
+### 5. `rosdep installation has not been initialized`
+
+Example error:
+
+```text
+ERROR: your rosdep installation has not been initialized yet.
+```
+
+Initialize rosdep:
+
+```bash
+sudo rosdep init
+```
+
+Then update the rosdep database:
+
+```bash
+rosdep update
+```
+
+> `rosdep update` should be executed without `sudo`.
+
+After that, install the dependencies of the ROS 2 workspace:
 
 ```bash
 cd ~/ros2_ws
@@ -265,10 +415,354 @@ cd ~/ros2_ws
 source /opt/ros/humble/setup.bash
 
 rosdep install --from-paths src --ignore-src -r -y
+```
 
+---
+
+### 6. `zed_msgs` or `nmea_msgs` not found during build
+
+Example:
+
+```text
+Could not find a package configuration file provided by "zed_msgs"
+```
+
+or:
+
+```text
+Could not find a package configuration file provided by "nmea_msgs"
+```
+
+Do not immediately modify `CMAKE_PREFIX_PATH` or `zed_msgs_DIR`.
+
+First make sure that `rosdep` has been initialized and that all dependencies have been installed:
+
+```bash
+sudo rosdep init
+rosdep update
+```
+
+If `rosdep init` was already executed previously, only run:
+
+```bash
+rosdep update
+```
+
+Then:
+
+```bash
+cd ~/ros2_ws
+source /opt/ros/humble/setup.bash
+
+rosdep install --from-paths src --ignore-src -r -y
+```
+
+The dependency installation should finish successfully before building the workspace.
+
+If necessary, clean the previous failed build:
+
+```bash
+cd ~/ros2_ws
+rm -rf build install log
+```
+
+Then rebuild:
+
+```bash
 colcon build --symlink-install --cmake-args=-DCMAKE_BUILD_TYPE=Release
 ```
 
+A successful ZED ROS 2 Wrapper build should end with something similar to:
+
+```text
+Finished <<< zed_components
+Finished <<< zed_wrapper
+Finished <<< zed_ros2
+
+Summary: 3 packages finished
+```
+
+---
+
+### 7. ZED packages are not visible after a successful build
+
+After a successful `colcon build`, the workspace must be sourced:
+
+```bash
+source /opt/ros/humble/setup.bash
+source ~/ros2_ws/install/setup.bash
+```
+
+Then check:
+
+```bash
+ros2 pkg list | grep zed
+```
+
+The ZED packages should now be visible.
+
+Every new terminal requires these commands unless they are added to `~/.bashrc`:
+
+```bash
+echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc
+echo "source ~/ros2_ws/install/setup.bash" >> ~/.bashrc
+source ~/.bashrc
+```
+## Complete ROS 2 Humble Installation
+
+> This section is for Ubuntu 22.04 (Jammy), including ARM64 Jetson/ZED Box systems.
+
+### 1. Check Ubuntu version
+
+```bash
+lsb_release -a
+```
+
+Expected:
+
+```text
+Release: 22.04
+Codename: jammy
+```
+
+---
+
+### 2. Configure locale
+
+```bash
+sudo apt update
+sudo apt install locales -y
+
+sudo locale-gen en_US en_US.UTF-8
+sudo update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
+
+export LANG=en_US.UTF-8
+```
+
+Check:
+
+```bash
+locale
+```
+
+---
+
+### 3. Enable Ubuntu Universe repository
+
+```bash
+sudo apt install software-properties-common -y
+sudo add-apt-repository universe
+```
+
+---
+
+### 4. Install required tools
+
+```bash
+sudo apt update
+sudo apt install curl -y
+```
+
+---
+
+### 5. Add the ROS 2 repository key
+
+```bash
+sudo curl -sSL \
+https://raw.githubusercontent.com/ros/rosdistro/master/ros.key \
+-o /usr/share/keyrings/ros-archive-keyring.gpg
+```
+
+---
+
+### 6. Add the official ROS 2 repository
+
+```bash
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" \
+| sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
+```
+
+Update APT:
+
+```bash
+sudo apt update
+```
+
+The ROS repository should appear as:
+
+```text
+packages.ros.org/ros2/ubuntu
+```
+
+Do NOT use:
+
+```text
+www.ros.org
+```
+
+as an APT repository.
+
+---
+
+### 7. Install ROS 2 Humble Desktop
+
+```bash
+sudo apt install ros-humble-desktop -y
+```
+
+Install ROS development tools:
+
+```bash
+sudo apt install ros-dev-tools -y
+```
+
+---
+
+### 8. Load the ROS 2 environment
+
+```bash
+source /opt/ros/humble/setup.bash
+```
+
+Verify:
+
+```bash
+echo $ROS_DISTRO
+```
+
+Expected:
+
+```text
+humble
+```
+
+Also check:
+
+```bash
+ros2 --help
+```
+
+---
+
+### 9. Initialize rosdep
+
+```bash
+sudo rosdep init
+```
+
+Then:
+
+```bash
+rosdep update
+```
+
+If `rosdep init` reports that the sources list already exists, do not initialize it again. Run only:
+
+```bash
+rosdep update
+```
+
+---
+
+### 10. Optional: automatically source ROS 2
+
+To avoid running the source command every time a new terminal is opened:
+
+```bash
+echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc
+source ~/.bashrc
+```
+
+Check:
+
+```bash
+echo $ROS_DISTRO
+```
+
+Expected:
+
+```text
+humble
+```
+
+---
+
+## ZED ROS 2 Workspace
+
+After ROS 2 Humble is installed, create the workspace:
+
+```bash
+mkdir -p ~/ros2_ws/src
+cd ~/ros2_ws/src
+```
+
+Clone the ZED ROS 2 Wrapper:
+
+```bash
+git clone --recursive https://github.com/stereolabs/zed-ros2-wrapper.git
+```
+
+Enter the repository:
+
+```bash
+cd zed-ros2-wrapper
+```
+
+For this project:
+
+```bash
+git checkout humble-v4.2.5
+git submodule update --init --recursive
+```
+
+Install ROS dependencies:
+
+```bash
+cd ~/ros2_ws
+
+source /opt/ros/humble/setup.bash
+
+rosdep update
+
+rosdep install --from-paths src --ignore-src -r -y
+```
+
+Build:
+
+```bash
+colcon build --symlink-install --cmake-args=-DCMAKE_BUILD_TYPE=Release
+```
+
+Load the workspace:
+
+```bash
+source ~/ros2_ws/install/setup.bash
+```
+
+Check the ZED packages:
+
+```bash
+ros2 pkg list | grep zed
+```
+
+---
+
+## Automatically load ROS 2 + ZED workspace
+
+After the workspace has been successfully built:
+
+```bash
+echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc
+echo "source ~/ros2_ws/install/setup.bash" >> ~/.bashrc
+```
+
+Reload:
+
+```bash
+source ~/.bashrc
+```
+
+From now on, new terminals should automatically load both ROS 2 Humble and the ZED ROS 2 workspace.
 ---
 
 # GPU Configuration
@@ -377,7 +871,8 @@ Depth Query
 
 ---
 
-# Launch Instructions RTAB-map + yolo11n  
+# Launch Instructions RTAB-map + yolo11n  (Fait attention chaque terminal il faut on code les source pour tout d'abord complier,et après )
+
 
 ## Terminal 1
 
@@ -396,6 +891,8 @@ ros2 launch zed_wrapper zed_camera.launch.py \
 ## Terminal 2  
 
 ```bash
+source /opt/ros/humble/setup.bash
+source ~/ros2_ws/install/setup.bash
 ros2 launch rtabmap_launch rtabmap.launch.py \
   rgb_topic:=/zed/zed_node/rgb/image_rect_color \
   depth_topic:=/zed/zed_node/depth/depth_registered \
